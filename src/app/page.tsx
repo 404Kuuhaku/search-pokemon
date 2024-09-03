@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { useCookies } from "next-client-cookies";
 import { gql, useQuery } from "@apollo/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
@@ -10,7 +9,6 @@ import PokemonCard from "@/components/card/PokemonCard";
 import PokemonNotFoundCard from "@/components/card/PokemonNotFoundCard";
 
 const Home = () => {
-	//search params
 	const [pokemonName, setPokemonName] = useState("");
 
 	const searchParams = useSearchParams();
@@ -34,7 +32,7 @@ const Home = () => {
 		router.push(pathname + "?" + createQueryString("name", search));
 	}, [createQueryString, pathname, router, search]);
 
-	//Search Bar
+
 	const onSearch = () => {
 		router.push(pathname + "?" + createQueryString("name", pokemonName));
 	};
@@ -46,7 +44,6 @@ const Home = () => {
 
 
 
-	// API query
 	const POKEMON_QUERY = gql`
 		query GetPokemon($name: String!) {
 			pokemon(name: $name) {
@@ -79,9 +76,7 @@ const Home = () => {
 		skip: !search,
 	});
 
-	// if (error) {
-	// 	return <div>Error: {error.message}</div>;
-	// }
+
 
 	const pokemon = data?.pokemon;
 

@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent, Typography } from "@mui/material";
 
 const PokemonNotFoundCard: React.FC = () => {
