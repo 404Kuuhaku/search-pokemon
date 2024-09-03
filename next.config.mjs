@@ -1,10 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {};
-
-// export default nextConfig;
-
-//TODOS DELETE THIS
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
