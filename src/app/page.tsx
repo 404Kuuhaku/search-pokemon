@@ -31,9 +31,7 @@ const Home = () => {
 
 	useEffect(() => {
 		if (!search) return;
-		console.log(`Search URL : ${search}`);
 		router.push(pathname + "?" + createQueryString("name", search));
-		console.log("createQueryString is created");
 	}, [createQueryString, pathname, router, search]);
 
 	//Search Bar
