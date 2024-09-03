@@ -25,14 +25,14 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 					sx={{ objectFit: "contain" }}
 				/>
 				<CardContent>
-					<Typography variant="h4" component="h1" gutterBottom>
+					<Typography variant="h4" component="h1" gutterBottom sx={{fontWeight: 700}}>
 						{pokemon?.name}
 					</Typography>
 
-					<Typography variant="h5" component="h2" gutterBottom>
+					<Typography variant="h5" component="h2" gutterBottom sx={{pt:1}}>
 						Fast Attacks:
 					</Typography>
-					<Grid container spacing={2}>
+					<Grid container spacing={2} >
 						{pokemon?.attacks.fast.map(
 							(attack: any, index: number) => (
 								<Grid size={{ xs: 12, sm: 6 }} key={index}>
@@ -49,7 +49,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 						)}
 					</Grid>
 
-					<Typography variant="h5" component="h2" gutterBottom>
+					<Typography variant="h5" component="h2" gutterBottom sx={{pt:3}}>
 						Special Attacks:
 					</Typography>
 					<Grid container spacing={2}>
@@ -69,7 +69,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 						)}
 					</Grid>
 
-					<Typography variant="h5" component="h2" gutterBottom>
+					<Typography variant="h5" component="h2" gutterBottom sx={{pt:3}}>
 						Evolutions:
 					</Typography>
 
