@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Box } from "@mui/material";
@@ -11,11 +11,14 @@ import PokemonNotFoundCard from "@/components/card/PokemonNotFoundCard";
 const Home = () => {
 	const [pokemonName, setPokemonName] = useState("");
 
+
 	const searchParams = useSearchParams();
 	const search = searchParams.get("name");
 
+
 	const router = useRouter();
 	const pathname = usePathname();
+
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
@@ -26,60 +29,55 @@ const Home = () => {
 		},
 		[searchParams]
 	);
-
 	useEffect(() => {
 		if (!search) return;
 		router.push(pathname + "?" + createQueryString("name", search));
 	}, [createQueryString, pathname, router, search]);
-
-
-	const onSearch = () => {
-		router.push(pathname + "?" + createQueryString("name", pokemonName));
-	};
-
 	useEffect(() => {
 		if (!search) return;
 		setPokemonName(search);
 	}, [search]);
 
 
-
-	const POKEMON_QUERY = gql`
-		query GetPokemon($name: String!) {
-			pokemon(name: $name) {
-				id
-				name
-				image
-				attacks {
-					fast {
-						name
-						type
-						damage
-					}
-					special {
-						name
-						type
-						damage
-					}
-				}
-				evolutions {
+	const POKEMON_QUERY = useMemo(
+		() => gql`
+			query GetPokemon($name: String!) {
+				pokemon(name: $name) {
+					id
 					name
 					image
+					attacks {
+						fast {
+							name
+							type
+							damage
+						}
+						special {
+							name
+							type
+							damage
+						}
+					}
+					evolutions {
+						name
+						image
+					}
 				}
 			}
-		}
-	`;
-
+		`,
+		[]
+	);
 	const { data, loading, error } = useQuery(POKEMON_QUERY, {
 		variables: { name: search },
-		fetchPolicy: 'cache-first',
+		fetchPolicy: "cache-first",
 		skip: !search,
 	});
+	const pokemon = useMemo(() => data?.pokemon, [data?.pokemon]);
 
 
-
-	const pokemon = data?.pokemon;
-
+	const onSearch = () => {
+		router.push(pathname + "?" + createQueryString("name", pokemonName));
+	};
 	const handleEvolutionClick = (name: string) => {
 		router.push(pathname + "?" + createQueryString("name", name));
 	};
