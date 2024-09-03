@@ -2,23 +2,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SearchBar from "@/components/SearchBar";
 import CardSkeleton from "@/components/card/CardSkeleton";
 import PokemonCard from "@/components/card/PokemonCard";
 import PokemonNotFoundCard from "@/components/card/PokemonNotFoundCard";
+import TryCard from "@/components/card/TryCard";
 
 const Home = () => {
 	const [pokemonName, setPokemonName] = useState("");
 
-
 	const searchParams = useSearchParams();
 	const search = searchParams.get("name");
 
-
 	const router = useRouter();
 	const pathname = usePathname();
-
 
 	const createQueryString = useCallback(
 		(name: string, value: string) => {
@@ -37,7 +35,6 @@ const Home = () => {
 		if (!search) return;
 		setPokemonName(search);
 	}, [search]);
-
 
 	const POKEMON_QUERY = useMemo(
 		() => gql`
@@ -73,7 +70,6 @@ const Home = () => {
 		skip: !search,
 	});
 	const pokemon = useMemo(() => data?.pokemon, [data?.pokemon]);
-
 
 	const onSearch = () => {
 		router.push(pathname + "?" + createQueryString("name", pokemonName));
@@ -127,6 +123,8 @@ const Home = () => {
 						<CardSkeleton />
 					) : pokemon === null ? (
 						<PokemonNotFoundCard />
+					) : pokemon === undefined ? (
+						<TryCard />
 					) : (
 						<PokemonCard
 							pokemon={pokemon}
