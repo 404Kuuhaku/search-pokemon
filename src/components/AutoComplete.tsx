@@ -69,7 +69,7 @@ export default function AutoCompleteSearchBar() {
 		},
 		[fetchPokemon]
 	);
-	// Debounce the search function
+
 	const debouncedList = useMemo(
 		() => debounce(handleSearch, 500),
 		[handleSearch]
@@ -181,7 +181,7 @@ export default function AutoCompleteSearchBar() {
 							ml: 1,
 							flex: 1,
 							input: {
-								padding: "4px 0", // Adjust padding if needed
+								padding: "4px 0",
 							},
 						}}
 					/>

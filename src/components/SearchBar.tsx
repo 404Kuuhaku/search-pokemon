@@ -23,7 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 			if (pokemonName.trim()) {
 				onSearch();
 			}
-		}, 500); // Adjust the delay (in milliseconds) as needed
+		}, 500);
 
 		debouncedSearch();
 

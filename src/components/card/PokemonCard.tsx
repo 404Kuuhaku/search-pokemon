@@ -1,4 +1,3 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
 	Box,
 	Button,
@@ -14,8 +13,6 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 	pokemon,
 	onEvolutionClick,
 }) => {
-	const router = useRouter();
-	const pathname = usePathname();
 	return (
 		<>
 			<Card>
@@ -81,29 +78,23 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 							pokemon.evolutions.map(
 								(evolution: any, index: number) => (
 									<Grid size={{ xs: 12, sm: 6 }} key={index}>
-										<CardMedia
-											component="img"
-											height="150"
-											image={evolution.image}
-											alt={evolution.name}
-											sx={{
-												objectFit: "contain",
-											}}
-										/>
-
+										<Box
+											onClick={() =>
+												onEvolutionClick(evolution.name)
+											}
+											sx={{ cursor: "pointer" }}
+										>
+											<CardMedia
+												component="img"
+												height="150"
+												image={evolution.image}
+												alt={evolution.name}
+												sx={{ objectFit: "contain" }}
+											/>
+										</Box>
 										<Button
 											variant="text"
 											size="large"
-											// onClick={() => {
-											// 	router.push(
-											// 		pathname +
-											// 			"?" +
-											// 			createQueryString(
-											// 				"name",
-											// 				evolution.name
-											// 			)
-											// 	);
-											// }}
 											onClick={() =>
 												onEvolutionClick(evolution.name)
 											}
@@ -127,5 +118,4 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 	);
 };
 
-
-export default PokemonCard
+export default PokemonCard;

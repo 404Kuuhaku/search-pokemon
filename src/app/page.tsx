@@ -3,19 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { gql, useQuery } from "@apollo/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-	Box,
-	Button,
-	Card,
-	CardContent,
-	CardMedia,
-	Typography,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import { Box } from "@mui/material";
 import SearchBar from "@/components/SearchBar";
-import AutoCompleteSearchBar from "@/components/AutoComplete";
 import CardSkeleton from "@/components/card/CardSkeleton";
 import PokemonCard from "@/components/card/PokemonCard";
+import PokemonNotFoundCard from "@/components/card/PokemonNotFoundCard";
 
 const Home = () => {
 	//search params
@@ -34,8 +26,6 @@ const Home = () => {
 		[searchParams]
 	);
 	useEffect(() => {
-		// createQueryString('name', 'pikachu')
-		// router.push(pathname + "?" + createQueryString("name", "pikachu"));
 		if (!search) return;
 		console.log(`Search URL : ${search}`);
 		router.push(pathname + "?" + createQueryString("name", search));
@@ -90,12 +80,8 @@ const Home = () => {
 		//         Authorization: `Bearer ${jwtToken}`,
 		//     },
 		// },
-		skip: !search, // Skip query if no search term
+		skip: !search,
 	});
-
-	// if (loading) {
-	// 	return <div>Loading...</div>;
-	// }
 
 	// if (error) {
 	// 	return <div>Error: {error.message}</div>;
@@ -109,10 +95,8 @@ const Home = () => {
 
 	return (
 		<>
-			<AutoCompleteSearchBar></AutoCompleteSearchBar>
-			<Box sx={{ display: "block", pb: 5 }}>
+			<Box sx={{ display: "block", py: 5 }}>
 				<Box
-					// sx={{ width: "100%", mb: 3 }}
 					sx={{
 						display: "flex",
 						justifyContent: "center",
@@ -136,10 +120,6 @@ const Home = () => {
 			</Box>
 			<Box sx={{ display: "block", pb: 5 }}>
 				<Box
-					// sx={{
-					// 	padding: { xs: "0 2%", sm: "0 5%", md: "0 10%", lg: "0 20%" },
-					// 	maxWidth: 500,
-					// }}
 					sx={{
 						display: "flex",
 						justifyContent: "center",
@@ -152,11 +132,12 @@ const Home = () => {
 						},
 						maxWidth: 500,
 						margin: "0 auto",
-						// height: "100vh",
 					}}
 				>
 					{loading ? (
 						<CardSkeleton />
+					) : pokemon === null ? (
+						<PokemonNotFoundCard />
 					) : (
 						<PokemonCard
 							pokemon={pokemon}
