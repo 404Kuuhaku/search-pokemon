@@ -10,7 +10,6 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
 		cache: new InMemoryCache(),
 		link: new HttpLink({
 			uri: "https://graphql-pokemon2.vercel.app/",
-			// fetchOptions: { cache: "no-store" }, //TODOS DELETE OR ADD THIS
 		}),
 	});
 });

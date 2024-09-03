@@ -1,3 +1,5 @@
+// "use server"
+"use client"
 import { Box, Card, CardContent, Skeleton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 

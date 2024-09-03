@@ -11,7 +11,6 @@ import {
 function makeClient() {
 	const httpLink = new HttpLink({
 		uri: "https://graphql-pokemon2.vercel.app/",
-		fetchOptions: { cache: "no-store" }, //TODOS DELETE OR ADD THIS
 	});
 
 	return new ApolloClient({
