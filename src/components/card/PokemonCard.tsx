@@ -1,0 +1,131 @@
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+	Box,
+	Button,
+	Card,
+	CardContent,
+	CardMedia,
+	Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { PokemonCardProps } from "@/libs/interface";
+
+const PokemonCard: React.FC<PokemonCardProps> = ({
+	pokemon,
+	onEvolutionClick,
+}) => {
+	const router = useRouter();
+	const pathname = usePathname();
+	return (
+		<>
+			<Card>
+				<CardMedia
+					component="img"
+					height={300}
+					image={pokemon?.image}
+					alt={pokemon?.name}
+					sx={{ objectFit: "contain" }}
+				/>
+				<CardContent>
+					<Typography variant="h4" component="h1" gutterBottom>
+						{pokemon?.name}
+					</Typography>
+
+					<Typography variant="h5" component="h2" gutterBottom>
+						Fast Attacks:
+					</Typography>
+					<Grid container spacing={2}>
+						{pokemon?.attacks.fast.map(
+							(attack: any, index: number) => (
+								<Grid size={{ xs: 12, sm: 6 }} key={index}>
+									<Box>
+										<Typography variant="body1">
+											{attack.name} ({attack.type})
+										</Typography>
+										<Typography variant="body2">
+											Damage: {attack.damage}
+										</Typography>
+									</Box>
+								</Grid>
+							)
+						)}
+					</Grid>
+
+					<Typography variant="h5" component="h2" gutterBottom>
+						Special Attacks:
+					</Typography>
+					<Grid container spacing={2}>
+						{pokemon?.attacks.special.map(
+							(attack: any, index: number) => (
+								<Grid size={{ xs: 12, sm: 6 }} key={index}>
+									<Box>
+										<Typography variant="body1">
+											{attack.name} ({attack.type})
+										</Typography>
+										<Typography variant="body2">
+											Damage: {attack.damage}
+										</Typography>
+									</Box>
+								</Grid>
+							)
+						)}
+					</Grid>
+
+					<Typography variant="h5" component="h2" gutterBottom>
+						Evolutions:
+					</Typography>
+
+					<Grid container spacing={2}>
+						{pokemon?.evolutions &&
+						pokemon.evolutions.length > 0 ? (
+							pokemon.evolutions.map(
+								(evolution: any, index: number) => (
+									<Grid size={{ xs: 12, sm: 6 }} key={index}>
+										<CardMedia
+											component="img"
+											height="150"
+											image={evolution.image}
+											alt={evolution.name}
+											sx={{
+												objectFit: "contain",
+											}}
+										/>
+
+										<Button
+											variant="text"
+											size="large"
+											// onClick={() => {
+											// 	router.push(
+											// 		pathname +
+											// 			"?" +
+											// 			createQueryString(
+											// 				"name",
+											// 				evolution.name
+											// 			)
+											// 	);
+											// }}
+											onClick={() =>
+												onEvolutionClick(evolution.name)
+											}
+										>
+											{evolution.name}
+										</Button>
+									</Grid>
+								)
+							)
+						) : (
+							<Grid size={{ xs: 12 }}>
+								<Typography variant="body1">
+									No evolutions
+								</Typography>
+							</Grid>
+						)}
+					</Grid>
+				</CardContent>
+			</Card>
+		</>
+	);
+};
+
+
+export default PokemonCard

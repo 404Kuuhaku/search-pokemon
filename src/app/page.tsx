@@ -3,10 +3,19 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
 import { gql, useQuery } from "@apollo/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	Card,
+	CardContent,
+	CardMedia,
+	Typography,
+} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import SearchBar from "@/components/SearchBar";
+import AutoCompleteSearchBar from "@/components/AutoComplete";
+import CardSkeleton from "@/components/card/CardSkeleton";
+import PokemonCard from "@/components/card/PokemonCard";
 
 const Home = () => {
 	//search params
@@ -84,136 +93,77 @@ const Home = () => {
 		skip: !search, // Skip query if no search term
 	});
 
-	if (loading) {
-		return <div>Loading...</div>;
-	}
+	// if (loading) {
+	// 	return <div>Loading...</div>;
+	// }
 
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
+	// if (error) {
+	// 	return <div>Error: {error.message}</div>;
+	// }
 
 	const pokemon = data?.pokemon;
 
+	const handleEvolutionClick = (name: string) => {
+		router.push(pathname + "?" + createQueryString("name", name));
+	};
+
 	return (
 		<>
-			<Box
-				// sx={{ width: "100%", mb: 3 }}
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					padding: {
-						xs: "2% 2%",
-						sm: "2% 5%",
-						md: "2% 10%",
-						lg: "2% 20%",
-					},
-					maxWidth: 500,
-					margin: "0 auto",
-				}}
-			>
-				<SearchBar
-					pokemonName={pokemonName}
-					setPokemonName={setPokemonName}
-					onSearch={onSearch}
-				/>
-			</Box>
-			<Box
-				// sx={{
-				// 	padding: { xs: "0 2%", sm: "0 5%", md: "0 10%", lg: "0 20%" },
-				// 	maxWidth: 500,
-				// }}
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					padding: {
-						xs: "0 2%",
-						sm: "0 5%",
-						md: "0 10%",
-						lg: "0 20%",
-					},
-					maxWidth: 500,
-					margin: "0 auto",
-					height: "100vh",
-				}}
-			>
-				<Card>
-					<CardMedia
-						component="img"
-						height={300}
-						image={pokemon?.image}
-						alt={pokemon?.name}
-						sx={{ objectFit: "contain" }}
+			<AutoCompleteSearchBar></AutoCompleteSearchBar>
+			<Box sx={{ display: "block", pb: 5 }}>
+				<Box
+					// sx={{ width: "100%", mb: 3 }}
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						padding: {
+							xs: "2% 2%",
+							sm: "2% 5%",
+							md: "2% 10%",
+							lg: "2% 20%",
+						},
+						maxWidth: 500,
+						margin: "0 auto",
+					}}
+				>
+					<SearchBar
+						pokemonName={pokemonName}
+						setPokemonName={setPokemonName}
+						onSearch={onSearch}
 					/>
-					<CardContent>
-						<Typography variant="h4" component="h1" gutterBottom>
-							{pokemon?.name}
-						</Typography>
-
-						<Typography variant="h5" component="h2" gutterBottom>
-							Fast Attacks:
-						</Typography>
-						<Grid container spacing={2}>
-							{pokemon?.attacks.fast.map(
-								(attack: any, index: number) => (
-									<Grid size={{ xs: 12, sm: 6 }} key={index}>
-										<Box>
-											<Typography variant="body1">
-												{attack.name} ({attack.type})
-											</Typography>
-											<Typography variant="body2">
-												Damage: {attack.damage}
-											</Typography>
-										</Box>
-									</Grid>
-								)
-							)}
-						</Grid>
-
-						<Typography variant="h5" component="h2" gutterBottom>
-							Special Attacks:
-						</Typography>
-						<Grid container spacing={2}>
-							{pokemon?.attacks.special.map(
-								(attack: any, index: number) => (
-									<Grid size={{ xs: 12, sm: 6 }} key={index}>
-										<Box>
-											<Typography variant="body1">
-												{attack.name} ({attack.type})
-											</Typography>
-											<Typography variant="body2">
-												Damage: {attack.damage}
-											</Typography>
-										</Box>
-									</Grid>
-								)
-							)}
-						</Grid>
-
-						<Typography variant="h5" component="h2" gutterBottom>
-							Evolutions:
-						</Typography>
-						<Grid container spacing={2}>
-							{pokemon?.evolutions.map(
-								(evolution: any, index: number) => (
-									<Grid size={{ xs: 12, sm: 6 }} key={index}>
-										<CardMedia
-											component="img"
-											height="150"
-											image={evolution.image}
-											alt={evolution.name}
-											sx={{ objectFit: "contain" }}
-										/>
-										<Typography variant="body1">
-											{evolution.name}
-										</Typography>
-									</Grid>
-								)
-							)}
-						</Grid>
-					</CardContent>
-				</Card>
+				</Box>
+			</Box>
+			<Box sx={{ display: "block", pb: 5 }}>
+				<Box
+					// sx={{
+					// 	padding: { xs: "0 2%", sm: "0 5%", md: "0 10%", lg: "0 20%" },
+					// 	maxWidth: 500,
+					// }}
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						padding: {
+							xs: "0 2%",
+							sm: "0 5%",
+							md: "0 10%",
+							lg: "0 20%",
+						},
+						maxWidth: 500,
+						margin: "0 auto",
+						// height: "100vh",
+					}}
+				>
+					{loading ? (
+						<CardSkeleton />
+					) : (
+						<PokemonCard
+							pokemon={pokemon}
+							onEvolutionClick={handleEvolutionClick}
+						/>
+					)}
+				</Box>
 			</Box>
 		</>
 	);
