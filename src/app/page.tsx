@@ -75,6 +75,7 @@ const Home = () => {
 
 	const { data, loading, error } = useQuery(POKEMON_QUERY, {
 		variables: { name: search },
+		fetchPolicy: 'cache-first',
 		// context: {
 		//     headers: {
 		//         Authorization: `Bearer ${jwtToken}`,
